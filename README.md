@@ -17,6 +17,7 @@ When the user clicks on a button, the page grabs 10 static, non-animated gif ima
 - [Twitter-Bootstrap](http://getbootstrap.com/) - Framework
 - JavaScript
 - [jQuery](https://api.jquery.com/) - JavaScript Library
+- GIPHY API
 
 ##
 
