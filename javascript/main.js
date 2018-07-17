@@ -1,88 +1,99 @@
-var topics = ["Game of Thrones", "Stranger Things", "The Handmaid's Tale", "Westworld", "Orphan Black", "This Is Us", "The Crown", "American Ninja Warrior", "Rupauls Drag Race", "The Amazing Race"];
+$(document).ready(function () {
 
-for (var i = 0; i < topics.length; i++) {
+  //array of topics that are going to become buttons
 
-  $(".buttons").append("<button class='btn btn-primary m-2' " + "data-show='" + topics[i] + "'>" + topics[i] + "</button>");
-
-}
-
-$("button").on("click", function () {
-
-  var searchTerm = $(this).attr("data-show");
-
-  var apiKey = "api_key=sv15d5YfSizgU0ZsRKgeIioehoepDWVz";
-
-  var url = "https://api.giphy.com/v1/gifs/search?" + apiKey + "&q=" + searchTerm + "&limit=10&offset=0&lang=en";
-
-  $.ajax({
-    url: url,
-    method: 'GET'
-  }).then(function (response) {
-    console.log(response);
-
-    var results = response.data;
+  var topics = ["Game of Thrones", "Stranger Things", "The Handmaid's Tale", "Westworld", "Orphan Black", "This Is Us", "The Crown", "American Ninja Warrior", "Rupauls Drag Race", "The Amazing Race"];
 
 
-    for (var i = 0; i < results.length; i++) {
 
+  //loop that dynamically creates buttons with elements of above array 
+  function createButtons() {
+    $(".buttons").empty();
 
-      $("#gifs-appear-here").append("<p>Rating: " + results[i].rating + "</p>");
+    for (var i = 0; i < topics.length; i++) {
 
-
-      var gifImage = $("<img>");
-
-      gifImage.attr("data-state", 'still');
-      gifImage.attr("src", results[i].images.fixed_height_still.url);
-
-
-      $("#gifs-appear-here").append(gifImage);
+      $(".buttons").append("<button class='btn btn-primary m-2' " + "data-show='" + topics[i] + "'>" + topics[i] + "</button>");
 
     }
+  };
+
+  createButtons();
+
+  //when user clicks button, reqeust sent to GIPHY API for that specific search term  
+  $("button").on("click", function () {
+
+    var searchTerm = $(this).attr("data-show");
+
+    var limit = 10;
+
+    var apiKey = "api_key=sv15d5YfSizgU0ZsRKgeIioehoepDWVz";
+
+    var url = "https://api.giphy.com/v1/gifs/search?" + apiKey + "&q=" + searchTerm + "&limit=" + limit + "&offset=0&lang=en";
+
+    $.ajax({
+      url: url,
+      method: 'GET'
+    }).then(function (response) {
+      console.log(response);
+
+      var results = response.data;
+
+      //10 images and their respective ratings created on the page 
+      for (var i = 0; i < results.length; i++) {
+
+        var gifDiv = $("<div>");
+
+        gifDiv.append("<p>Rating: " + results[i].rating + "</p>");
+
+        var gifImage = $("<img>");
+
+        gifImage.attr("data-state", "still");
+        gifImage.attr("data-still", results[i].images.fixed_height_still.url);
+        gifImage.attr("data-animate", results[i].images.fixed_height.url);
+        gifImage.attr("class", "gif");
+        gifImage.attr("src", results[i].images.fixed_height_still.url);
+        gifDiv.append(gifImage);
+
+        $("#gifs-appear-here").append(gifDiv);
+
+      }
+
+    })
 
   })
 
-  // $(".gif").on("click", function () {
-  //   //   // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
-  //   var state = $(this).attr("data-state");
-  //   //   //the 'this' keyword points to the thing that we're pressing
-  //   //   //'this' gets the data-state attribute from whatever it is that we press 
-  //   //   // If the clicked image's state is still, update its src attribute to what its data-animate value is.
-  //   //   // Then, set the image's data-state to animate
-  //   //   // Else set src to the data-still value
-  //   if (state === "still") {
-  //     $(this).attr("data-state", 'animate');
-  //     $(this).attr("src", results[i].images.fixed_height_small.url);
-  //   } else {
-  //     $(this).attr("data-state", 'still');
-  //     $(this).attr("src", results[i].images.fixed_height_still.url);
-  //   }
+  //when user clicks a gif, it toggles between still and animated 
+  $(document.body).on("click", ".gif", function () {
+
+    var state = $(this).attr("data-state");
+
+    if (state === "still") {
+      $(this).attr("src", $(this).attr("data-animate"));
+      $(this).attr("data-state", "animate");
+    } else {
+      $(this).attr("src", $(this).attr("data-still"));
+      $(this).attr("data-state", "still");
+    }
+
+  });
+
+  $("#submit").on("click", function (event) {
+
+    event.preventDefault();
+
+    // Get the to-do "value" from the textbox and store it a variable
+    //.trim() removes the spaces from the beginning and the end of the string; makes things 'neater'
+    var userInput = $("input").val().trim();
+    $("input").val("");
+
+    topics.push(userInput);
+
+
+    createButtons();
+
+  });
 
 });
-
-
-// $.ajax({
-//   url: queryURL,
-//   method: "GET"
-// })
-//   .then(function (response) {
-//     var results = response.data;
-
-//     for (var i = 0; i < results.length; i++) {
-//       var gifDiv = $("<div class='item'>");
-
-//       var rating = results[i].rating;
-
-//       var p = $("<p>").text("Rating: " + rating);
-
-//       var personImage = $("<img>");
-//       personImage.attr("src", results[i].images.fixed_height.url);
-
-//       gifDiv.prepend(p);
-//       gifDiv.prepend(personImage);
-
-//       $("#gifs-appear-here").prepend(gifDiv);
-//     }
-
 
 
 
