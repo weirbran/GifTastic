@@ -1,0 +1,48 @@
+body {
+  background-image: url("../images/Emmy-Awards-key-art.jpg");
+  background-size: 100%;
+  font-size: 20px;
+  color: #FF851B;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
+  font-weight: bold;
+}
+
+#gifs-appear-here{
+  margin-left: 10px;
+}
+
+form{
+  margin-top: 20px;
+  margin-bottom: 25px;
+}
+
+#image-container{
+  float: right;
+  margin: 25px;
+}
+
+img{
+  max-width: 300px;
+  max-height: 300px;
+}
+
+.btn{
+  color: #FF851B;
+  font-weight: bold;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+.jumbotron{
+  margin-top: 10px;
+  text-align:center;
+  height: 50px;
+  padding-top: -50px;
+  overflow: hidden;
+}
+
+h1{
+  box-sizing: content-box;
+  margin-top: -30px;
+}
